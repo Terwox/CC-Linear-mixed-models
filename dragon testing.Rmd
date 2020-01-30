@@ -254,7 +254,7 @@ For the record, you could also use the below syntax, and you will often come acr
 
 (1|mountainRange/site) or even (1|mountainRange) + (1|mountainRange:site)
 
-(That is much easier to managed in my opinion.)
+(That is much easier to manage in my opinion.)
 
 
 ```{r}
@@ -274,3 +274,13 @@ mixed.slope <- lmer(testScore ~ bodyLength2 + (1 + bodyLength2|mountainRange/sit
 summary(mixed.slope)
 ```
 
+```{r}
+(mm_plot <- ggplot(dragons, aes(x = bodyLength, y = testScore, colour = site)) +
+      facet_wrap(~mountainRange, nrow=2) +   # a panel for each mountain range
+      geom_point(alpha = 0.5) +
+      theme_classic() +
+      geom_line(data = cbind(dragons, pred = predict(mixed.slope)), aes(y = pred), size = 1) +  # adding predicted line from mixed model 
+      theme(legend.position = "none",
+            panel.spacing = unit(2, "lines"))  # adding space between panels
+)
+```
